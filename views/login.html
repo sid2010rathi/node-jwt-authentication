@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Regiter and Login</title>
+    </head>
+    <body>
+        <h1>Login</h1>
+        <form id="login-form">
+            <input type="text" autocomplete="off" name="username" id="username">
+            <input type="password" autocomplete="off" name="password" id="password">
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+    <script>
+        const form = document.getElementById("login-form");
+        form.addEventListener("submit", login);
+
+        async function login(e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const result = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            }).then((res) => res.json());
+
+            if(result.status == "ok") {
+                localStorage.setItem('token', result.data);
+                location.replace("http://localhost:9999/changepassword.html");
+            } else {
+                alert(result.error);
+            }            
+        }
+    </script>
+</html>
