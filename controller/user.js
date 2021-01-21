@@ -36,7 +36,7 @@ async function registerUser(req, res) {
 
         await User.create({username, password}, (err, response) => {
             response.password = undefined;
-            res.status(200).json({data: response});
+            res.status(200).json({status: 'ok', data: response});
         })
         
     } catch(error) {
